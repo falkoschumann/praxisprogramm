@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>354</width>
-    <height>22</height>
+    <width>359</width>
+    <height>30</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,10 +15,10 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="topMargin">
-    <number>0</number>
+    <number>2</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>2</number>
    </property>
    <item>
     <widget class="QLabel" name="titleLabel">
@@ -32,12 +32,20 @@
      <property name="text">
       <string>|&lt;</string>
      </property>
+     <property name="icon">
+      <iconset resource="recordnavigator.qrc">
+       <normaloff>:/core/images/go-first.png</normaloff>:/core/images/go-first.png</iconset>
+     </property>
     </widget>
    </item>
    <item>
     <widget class="QToolButton" name="toPrevoiusButton">
      <property name="text">
       <string>&lt;</string>
+     </property>
+     <property name="icon">
+      <iconset resource="recordnavigator.qrc">
+       <normaloff>:/core/images/go-previous.png</normaloff>:/core/images/go-previous.png</iconset>
      </property>
     </widget>
    </item>
@@ -62,6 +70,10 @@
      <property name="text">
       <string>&gt;</string>
      </property>
+     <property name="icon">
+      <iconset resource="recordnavigator.qrc">
+       <normaloff>:/core/images/go-next.png</normaloff>:/core/images/go-next.png</iconset>
+     </property>
     </widget>
    </item>
    <item>
@@ -69,12 +81,20 @@
      <property name="text">
       <string>&gt;|</string>
      </property>
+     <property name="icon">
+      <iconset resource="recordnavigator.qrc">
+       <normaloff>:/core/images/go-last.png</normaloff>:/core/images/go-last.png</iconset>
+     </property>
     </widget>
    </item>
    <item>
     <widget class="QToolButton" name="newButton">
      <property name="text">
       <string>&gt;*</string>
+     </property>
+     <property name="icon">
+      <iconset resource="recordnavigator.qrc">
+       <normaloff>:/core/images/document-new.png</normaloff>:/core/images/document-new.png</iconset>
      </property>
     </widget>
    </item>
@@ -87,6 +107,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="recordnavigator.qrc"/>
+ </resources>
  <connections/>
 </ui>

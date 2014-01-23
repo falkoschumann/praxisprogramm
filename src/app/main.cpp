@@ -30,6 +30,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    Q_INIT_RESOURCE(core);
     MainWindow w;
     w.show();
 

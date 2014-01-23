@@ -26,9 +26,16 @@
 
 #include "mainwindow.h"
 
+#include <core/recordnavigation.h>
+
+using namespace Core;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    setWindowTitle("Praxisprogramm");
+    resize(800, 600);
+    setCentralWidget(new RecordNavigation(this));
 }
 
 MainWindow::~MainWindow()

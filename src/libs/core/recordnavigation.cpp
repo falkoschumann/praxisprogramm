@@ -35,7 +35,7 @@ class Core::RecordNavigationPrivate
 {
 public:
     RecordNavigationPrivate()
-        : ui(new Ui::RecordNavigation), model(0)
+        : currentIndex(0), ui(new Ui::RecordNavigation), model(0)
     {
     }
 
@@ -44,10 +44,21 @@ public:
         delete ui;
     }
 
+    int currentIndex;
     Ui::RecordNavigation *ui;
     QAbstractItemModel *model;
 };
 
+/*!
+ * \brief Ein Widget zum Navigieren innerhalb eines Modells.
+ *
+ * Man kann einen Datensatz vor- oder zurückspringen oder zum ersten oder letzten Datensatz
+ * springen. Der aktuelle Datensatz und die Anzahl der Datensätze werden angezeigt. Man kann direkt
+ * zu einem bestimmten Datensatz springen, in dem man den Datensatzindex angibt. Und natürlich kann
+ * ein neuer Datensatz angelegt werden.
+ *
+ * \invariant 0 <= currentIndex() && currentIndex() <= model()->rowCount()
+ */
 RecordNavigation::RecordNavigation(QWidget *parent)
     : QWidget(parent), d_ptr(new RecordNavigationPrivate)
 {
@@ -65,51 +76,66 @@ QAbstractItemModel *RecordNavigation::model() const
     return 0;
 }
 
+/*!
+ * \post model() == model;
+ */
 void RecordNavigation::setModel(QAbstractItemModel *model)
-{
-
-}
-
-QModelIndex	RecordNavigation::rootIndex() const
-{
-    return QModelIndex();
-}
-
-void RecordNavigation::setRootIndex(const QModelIndex &index)
 {
 
 }
 
 int RecordNavigation::currentIndex() const
 {
-    return -1;
+    return 0;
 }
 
+/*!
+ * \pre 0 <= index && index <= model()->rowCount()
+ * \post currentIndex() == index
+ */
 void RecordNavigation::setCurrentIndex(int index)
 {
 
 }
 
+/*!
+ * \pre 0 <= index.row() && index.row() <= model()->rowCount()
+ * \post currentIndex() == index.row()
+ */
 void RecordNavigation::setCurrentModelIndex(const QModelIndex &index)
 {
 
 }
 
+/*!
+ * \post currentIndex() == 0
+ */
 void RecordNavigation::toFirst()
 {
 
 }
 
+/*!
+ * \post currentIndex() == model()->rowCount() - 1
+ */
 void RecordNavigation::toLast()
 {
 
 }
 
+/*!
+ * \pre $index = currentIndex()
+ * \post currentIndex() == $index + 1
+ */
 void RecordNavigation::toNext()
 {
 
 }
 
+/*!
+ * \pre $index = currentIndex()
+ * \post currentIndex() == $index - 1
+ */
 void RecordNavigation::toPrevious()
 {
 

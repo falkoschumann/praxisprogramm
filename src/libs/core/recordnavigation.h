@@ -49,9 +49,6 @@ public:
     QAbstractItemModel *model() const;
     void setModel(QAbstractItemModel *model);
 
-    QModelIndex	rootIndex() const;
-    void setRootIndex (const QModelIndex &index);
-
     int currentIndex() const;
 
 public slots:

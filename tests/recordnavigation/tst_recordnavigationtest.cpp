@@ -34,7 +34,7 @@
 #include <QSqlQuery>
 #include <QSqlTableModel>
 
-#include <recordnavigation.h>
+#include <core/recordnavigation.h>
 
 class RecordNavigationTest : public QObject
 {
@@ -275,7 +275,7 @@ void RecordNavigationTest::testPressToNew()
 {
     inputElement(5);
     pressToNew();
-    assertElement(18);
+    assertElement(8);
 }
 
 void RecordNavigationTest::pressToNew()

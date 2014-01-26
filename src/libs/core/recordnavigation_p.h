@@ -35,6 +35,8 @@ namespace Ui {
     class RecordNavigation;
 }
 
+namespace Core {
+
 class RecordNavigation;
 
 class RecordNavigationPrivate : public QObject
@@ -58,5 +60,7 @@ public slots:
 private:
     Q_DISABLE_COPY(RecordNavigationPrivate)
 };
+
+}
 
 #endif // RECORDNAVIGATION_P_H

@@ -31,6 +31,8 @@
 #include <QModelIndex>
 #include <QStandardItemModel>
 
+using namespace Core;
+
 RecordNavigationPrivate::RecordNavigationPrivate(RecordNavigation *q) :
     q_ptr(q),
     currentIndex(0),

@@ -28,6 +28,8 @@
 
 #include <core/recordnavigation.h>
 
+using namespace Core;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {

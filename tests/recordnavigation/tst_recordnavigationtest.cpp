@@ -36,6 +36,8 @@
 
 #include <core/recordnavigation.h>
 
+using namespace Core;
+
 class RecordNavigationTest : public QObject
 {
     Q_OBJECT

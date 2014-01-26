@@ -32,6 +32,8 @@
 class QAbstractItemModel;
 class QModelIndex;
 
+namespace Core {
+
 class RecordNavigationPrivate;
 
 class RecordNavigation : public QWidget
@@ -65,5 +67,7 @@ private:
     Q_DISABLE_COPY(RecordNavigation)
     RecordNavigationPrivate *d_ptr;
 };
+
+}
 
 #endif // RECORDNAVIGATION_H

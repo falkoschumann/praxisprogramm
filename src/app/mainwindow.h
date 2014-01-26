@@ -35,7 +35,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    virtual ~MainWindow();
 };
 
 #endif // MAINWINDOW_H

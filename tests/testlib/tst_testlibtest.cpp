@@ -35,10 +35,11 @@ public:
     TestlibTest();
 
 private Q_SLOTS:
-    void initTestCase();
-    void cleanupTestCase();
-    void init();
-    void cleanup();
+    void initTestCase();     // run once before all test cases
+    void cleanupTestCase();  // run once after all test cases
+    void init();             // run before every test case
+    void cleanup();          // run after every test case
+
     void testCase1();
     void testCase2();
 };

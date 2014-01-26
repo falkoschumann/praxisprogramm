@@ -32,8 +32,6 @@
 class QAbstractItemModel;
 class QModelIndex;
 
-namespace Core {
-
 class RecordNavigationPrivate;
 
 class RecordNavigation : public QWidget
@@ -44,7 +42,7 @@ class RecordNavigation : public QWidget
 
 public:
     RecordNavigation(QWidget *parent = 0);
-    ~RecordNavigation();
+    virtual ~RecordNavigation();
 
     QAbstractItemModel *model() const;
     void setModel(QAbstractItemModel *model);
@@ -56,6 +54,7 @@ public slots:
     void toLast();
     void toNext();
     void toPrevious();
+    void toNew();
     virtual void setCurrentIndex(int index);
     void setCurrentModelIndex(const QModelIndex &index);
 
@@ -66,7 +65,5 @@ private:
     Q_DISABLE_COPY(RecordNavigation)
     RecordNavigationPrivate *d_ptr;
 };
-
-}
 
 #endif // RECORDNAVIGATION_H

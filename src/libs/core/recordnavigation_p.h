@@ -24,14 +24,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "mainwindow.h"
-#include <QApplication>
+#ifndef RECORDNAVIGATION_P_H
+#define RECORDNAVIGATION_P_H
 
-int main(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
-    Q_INIT_RESOURCE(core);
-    MainWindow window;
-    window.show();
-    return app.exec();
+#include <QObject>
+
+class QAbstractItemModel;
+
+namespace Ui {
+    class RecordNavigation;
 }
+
+class RecordNavigation;
+
+class RecordNavigationPrivate : public QObject
+{
+    Q_OBJECT
+
+public:
+    RecordNavigationPrivate(RecordNavigation *q);
+    virtual ~RecordNavigationPrivate();
+
+    void update();
+
+    RecordNavigation *q_ptr;
+    int currentIndex;
+    Ui::RecordNavigation *ui;
+    QAbstractItemModel *model;
+
+public slots:
+    void currentRowEdited();
+
+private:
+    Q_DISABLE_COPY(RecordNavigationPrivate)
+};
+
+#endif // RECORDNAVIGATION_P_H

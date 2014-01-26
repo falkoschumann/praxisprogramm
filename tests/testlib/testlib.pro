@@ -1,4 +1,4 @@
-QT       += sql testlib
+QT       += testlib
 QT       -= gui
 TARGET    = tst_testlib
 CONFIG   += console

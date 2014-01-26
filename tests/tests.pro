@@ -1,2 +1,3 @@
 TEMPLATE  = subdirs
-SUBDIRS  += testlib
+SUBDIRS  += testlib \
+            recordnavigation

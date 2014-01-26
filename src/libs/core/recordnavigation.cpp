@@ -25,29 +25,43 @@
  */
 
 #include "recordnavigation.h"
+#include "recordnavigation_p.h"
 #include "ui_recordnavigation.h"
 
 #include <QModelIndex>
+#include <QStandardItemModel>
 
-using namespace Core;
-
-class Core::RecordNavigationPrivate
+RecordNavigationPrivate::RecordNavigationPrivate(RecordNavigation *q) :
+    q_ptr(q),
+    currentIndex(0),
+    ui(new Ui::RecordNavigation),
+    model(new QStandardItemModel())
 {
-public:
-    RecordNavigationPrivate()
-        : currentIndex(0), ui(new Ui::RecordNavigation), model(0)
-    {
-    }
+    ui->setupUi(q);
+    ui->currentRow->setFocus();
+}
 
-    ~RecordNavigationPrivate()
-    {
-        delete ui;
-    }
+RecordNavigationPrivate::~RecordNavigationPrivate()
+{
+    delete ui;
+}
 
-    int currentIndex;
-    Ui::RecordNavigation *ui;
-    QAbstractItemModel *model;
-};
+void RecordNavigationPrivate::update()
+{
+    ui->currentRow->setText(QString::number(currentIndex + 1));
+    ui->rowCountLabel->setText(QString("of %1").arg(model->rowCount()));
+
+    bool currentIsFirst = currentIndex == 0;
+    ui->toFirstButton->setEnabled(!currentIsFirst);
+    ui->toPreviousButton->setEnabled(!currentIsFirst);
+}
+
+void RecordNavigationPrivate::currentRowEdited()
+{
+    bool ok;
+    int newIndex = ui->currentRow->text().toInt(&ok);
+    if (ok) q_ptr->setCurrentIndex(newIndex - 1);
+}
 
 /*!
  * \brief Ein Widget zum Navigieren innerhalb eines Modells.
@@ -57,13 +71,20 @@ public:
  * zu einem bestimmten Datensatz springen, in dem man den Datensatzindex angibt. Und natürlich kann
  * ein neuer Datensatz angelegt werden.
  *
+ * \remarks Die Klasse übernimmt nicht den Besitz des Modells und löscht es auch nicht, wenn sie
+ *     zerstört wird.
  * \invariant 0 <= currentIndex() && currentIndex() <= model()->rowCount()
  */
-RecordNavigation::RecordNavigation(QWidget *parent)
-    : QWidget(parent), d_ptr(new RecordNavigationPrivate)
+RecordNavigation::RecordNavigation(QWidget *parent) :
+    QWidget(parent),
+    d_ptr(new RecordNavigationPrivate(this))
 {
-    d_ptr->ui->setupUi(this);
-    d_ptr->ui->currentRow->setFocus();
+    connect(d_ptr->ui->toFirstButton, SIGNAL(clicked()), this, SLOT(toFirst()));
+    connect(d_ptr->ui->toPreviousButton, SIGNAL(clicked()), this, SLOT(toPrevious()));
+    connect(d_ptr->ui->currentRow, SIGNAL(editingFinished()), d_ptr, SLOT(currentRowEdited()));
+    connect(d_ptr->ui->toNextButton, SIGNAL(clicked()), this, SLOT(toNext()));
+    connect(d_ptr->ui->toLastButton, SIGNAL(clicked()), this, SLOT(toLast()));
+    connect(d_ptr->ui->toNewButton, SIGNAL(clicked()), this, SLOT(toNew()));
 }
 
 RecordNavigation::~RecordNavigation()
@@ -73,7 +94,7 @@ RecordNavigation::~RecordNavigation()
 
 QAbstractItemModel *RecordNavigation::model() const
 {
-    return 0;
+    return d_ptr->model;
 }
 
 /*!
@@ -81,12 +102,13 @@ QAbstractItemModel *RecordNavigation::model() const
  */
 void RecordNavigation::setModel(QAbstractItemModel *model)
 {
-
+    d_ptr->model = model;
+    setCurrentIndex(0);
 }
 
 int RecordNavigation::currentIndex() const
 {
-    return 0;
+    return d_ptr->currentIndex;
 }
 
 /*!
@@ -95,7 +117,8 @@ int RecordNavigation::currentIndex() const
  */
 void RecordNavigation::setCurrentIndex(int index)
 {
-
+    d_ptr->currentIndex = index;
+    d_ptr->update();
 }
 
 /*!
@@ -104,7 +127,7 @@ void RecordNavigation::setCurrentIndex(int index)
  */
 void RecordNavigation::setCurrentModelIndex(const QModelIndex &index)
 {
-
+    setCurrentIndex(index.row());
 }
 
 /*!
@@ -112,7 +135,7 @@ void RecordNavigation::setCurrentModelIndex(const QModelIndex &index)
  */
 void RecordNavigation::toFirst()
 {
-
+    setCurrentIndex(0);
 }
 
 /*!
@@ -120,23 +143,33 @@ void RecordNavigation::toFirst()
  */
 void RecordNavigation::toLast()
 {
-
+    setCurrentIndex(model()->rowCount() - 1);
 }
 
 /*!
  * \pre $index = currentIndex()
+ * \pre currentIndex() <= model()->rowCount()
  * \post currentIndex() == $index + 1
  */
 void RecordNavigation::toNext()
 {
-
+    setCurrentIndex(currentIndex() + 1);
 }
 
 /*!
  * \pre $index = currentIndex()
+ * \pre currentIndex() > 0
  * \post currentIndex() == $index - 1
  */
 void RecordNavigation::toPrevious()
 {
+    setCurrentIndex(currentIndex() - 1);
+}
 
+/**
+ * \post currentIndex() == model()->rowCount()
+ */
+void RecordNavigation::toNew()
+{
+    setCurrentIndex(model()->rowCount());
 }

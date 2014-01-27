@@ -1,6 +1,6 @@
 QT          += sql testlib
 TARGET       = tst_recordnavigationtest
-CONFIG      += console
+CONFIG      += console testcase
 CONFIG      -= app_bundle
 TEMPLATE     = app
 SOURCES     += tst_recordnavigationtest.cpp

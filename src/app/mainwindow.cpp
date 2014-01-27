@@ -26,7 +26,10 @@
 
 #include "mainwindow.h"
 
-#include <core/recordnavigation.h>
+#include <core/form.h>
+
+#include <QHBoxLayout>
+#include <QLabel>
 
 using namespace Core;
 
@@ -34,8 +37,31 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     setWindowTitle("Praxisprogramm");
-    resize(800, 600);
-    setCentralWidget(new RecordNavigation(this));
+    resize(1000, 600);
+
+    QWidget *header = new QWidget();
+    header->setStyleSheet("background-color:red;");
+    QLayout *headerLayout = new QHBoxLayout();
+    headerLayout->addWidget(new QLabel("Header"));
+    header->setLayout(headerLayout);
+
+    QWidget *body = new QWidget();
+    body->setStyleSheet("background-color:yellow;");
+    QLayout *bodyLayout = new QHBoxLayout();
+    bodyLayout->addWidget(new QLabel("Body"));
+    body->setLayout(bodyLayout);
+
+    QWidget *footer = new QWidget();
+    footer->setStyleSheet("background-color:green;");
+    QLayout *footerLayout = new QHBoxLayout();
+    footerLayout->addWidget(new QLabel("Footer"));
+    footer->setLayout(footerLayout);
+
+    Form *form = new Form(this);
+    form->setBody(body);
+    form->setHeader(header);
+    form->setFooter(footer);
+    setCentralWidget(form);
 }
 
 MainWindow::~MainWindow()

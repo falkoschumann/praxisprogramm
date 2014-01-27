@@ -24,50 +24,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef RECORDNAVIGATION_H
-#define RECORDNAVIGATION_H
+#ifndef CORE_FORM_H
+#define CORE_FORM_H
 
 #include <QWidget>
 
-class QAbstractItemModel;
-class QModelIndex;
-
 namespace Core {
 
-class RecordNavigationPrivate;
+class FormPrivate;
 
-class RecordNavigation : public QWidget
+class Form : public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
-
 public:
-    explicit RecordNavigation(QWidget *parent = 0);
-    virtual ~RecordNavigation();
+    explicit Form(QWidget *parent = 0);
+    virtual ~Form();
 
-    QAbstractItemModel *model() const;
-    void setModel(QAbstractItemModel *model);
+    QWidget *header() const;
+    void setHeader(QWidget *header);
 
-    int currentIndex() const;
+    QWidget *body() const;
+    void setBody(QWidget *body);
 
-public slots:
-    void toFirst();
-    void toLast();
-    void toNext();
-    void toPrevious();
-    void toNew();
-    virtual void setCurrentIndex(int index);
-    void setCurrentModelIndex(const QModelIndex &index);
+    QWidget *footer() const;
+    void setFooter(QWidget *footer);
 
 signals:
-    void currentIndexChanged(int index);
+
+public slots:
 
 private:
-    Q_DISABLE_COPY(RecordNavigation)
-    RecordNavigationPrivate *d_ptr;
+    Q_DISABLE_COPY(Form)
+    FormPrivate *d_ptr;
 };
 
-}
+} // namespace Core
 
-#endif // RECORDNAVIGATION_H
+#endif // CORE_FORM_H

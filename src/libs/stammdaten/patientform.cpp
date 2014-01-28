@@ -27,6 +27,8 @@
 #include "patientform.h"
 #include "ui_patientformbody.h"
 
+#include <core/recordnavigation.h>
+
 #include <QHBoxLayout>
 #include <QLabel>
 
@@ -54,14 +56,9 @@ PatientForm::PatientForm(QWidget *parent) :
     QWidget *body = new QWidget();
     d->uiBody = new Ui::PatientForm();
     d->uiBody->setupUi(body);
-    //body->setStyleSheet("background-color:yellow;");
     setBody(body);
 
-    QWidget *footer = new QWidget();
-    footer->setStyleSheet("background-color:green;");
-    QLayout *footerLayout = new QHBoxLayout();
-    footerLayout->addWidget(new QLabel("{Platzhalter fuer Formularfuss}"));
-    footer->setLayout(footerLayout);
+    RecordNavigation *footer  = new RecordNavigation();
     setFooter(footer);
 }
 

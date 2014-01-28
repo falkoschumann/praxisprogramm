@@ -36,6 +36,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = 0);
     virtual ~MainWindow();
+
+private:
+    Q_DISABLE_COPY(MainWindow)
 };
 
 #endif // MAINWINDOW_H

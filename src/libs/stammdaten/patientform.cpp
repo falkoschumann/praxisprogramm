@@ -54,7 +54,7 @@ PatientForm::PatientForm(QWidget *parent) :
     QWidget *body = new QWidget();
     d->uiBody = new Ui::PatientForm();
     d->uiBody->setupUi(body);
-    body->setStyleSheet("background-color:yellow;");
+    //body->setStyleSheet("background-color:yellow;");
     setBody(body);
 
     QWidget *footer = new QWidget();

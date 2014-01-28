@@ -60,9 +60,10 @@ void RecordNavigationPrivate::update()
 
 void RecordNavigationPrivate::currentRowEdited()
 {
+    Q_Q(RecordNavigation);
     bool ok;
     int newIndex = ui->currentRow->text().toInt(&ok);
-    if (ok) q_ptr->setCurrentIndex(newIndex - 1);
+    if (ok) q->setCurrentIndex(newIndex - 1);
 }
 
 /*!
@@ -81,12 +82,13 @@ RecordNavigation::RecordNavigation(QWidget *parent) :
     QWidget(parent),
     d_ptr(new RecordNavigationPrivate(this))
 {
-    connect(d_ptr->ui->toFirstButton, SIGNAL(clicked()), this, SLOT(toFirst()));
-    connect(d_ptr->ui->toPreviousButton, SIGNAL(clicked()), this, SLOT(toPrevious()));
-    connect(d_ptr->ui->currentRow, SIGNAL(editingFinished()), d_ptr, SLOT(currentRowEdited()));
-    connect(d_ptr->ui->toNextButton, SIGNAL(clicked()), this, SLOT(toNext()));
-    connect(d_ptr->ui->toLastButton, SIGNAL(clicked()), this, SLOT(toLast()));
-    connect(d_ptr->ui->toNewButton, SIGNAL(clicked()), this, SLOT(toNew()));
+    Q_D(RecordNavigation);
+    connect(d->ui->toFirstButton, SIGNAL(clicked()), this, SLOT(toFirst()));
+    connect(d->ui->toPreviousButton, SIGNAL(clicked()), this, SLOT(toPrevious()));
+    connect(d->ui->currentRow, SIGNAL(editingFinished()), d, SLOT(currentRowEdited()));
+    connect(d->ui->toNextButton, SIGNAL(clicked()), this, SLOT(toNext()));
+    connect(d->ui->toLastButton, SIGNAL(clicked()), this, SLOT(toLast()));
+    connect(d->ui->toNewButton, SIGNAL(clicked()), this, SLOT(toNew()));
 }
 
 RecordNavigation::~RecordNavigation()
@@ -96,7 +98,8 @@ RecordNavigation::~RecordNavigation()
 
 QAbstractItemModel *RecordNavigation::model() const
 {
-    return d_ptr->model;
+    Q_D(const RecordNavigation);
+    return d->model;
 }
 
 /*!
@@ -104,13 +107,15 @@ QAbstractItemModel *RecordNavigation::model() const
  */
 void RecordNavigation::setModel(QAbstractItemModel *model)
 {
-    d_ptr->model = model;
+    Q_D(RecordNavigation);
+    d->model = model;
     setCurrentIndex(0);
 }
 
 int RecordNavigation::currentIndex() const
 {
-    return d_ptr->currentIndex;
+    Q_D(const RecordNavigation);
+    return d->currentIndex;
 }
 
 /*!
@@ -119,8 +124,9 @@ int RecordNavigation::currentIndex() const
  */
 void RecordNavigation::setCurrentIndex(int index)
 {
-    d_ptr->currentIndex = index;
-    d_ptr->update();
+    Q_D(RecordNavigation);
+    d->currentIndex = index;
+    d->update();
 }
 
 /*!

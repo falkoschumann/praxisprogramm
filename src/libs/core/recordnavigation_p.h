@@ -42,6 +42,8 @@ class RecordNavigation;
 class RecordNavigationPrivate : public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY(RecordNavigationPrivate)
+    Q_DECLARE_PUBLIC(RecordNavigation)
 
 public:
     RecordNavigationPrivate(RecordNavigation *q);
@@ -49,16 +51,14 @@ public:
 
     void update();
 
+private:
     RecordNavigation *q_ptr;
     int currentIndex;
     Ui::RecordNavigation *ui;
     QAbstractItemModel *model;
 
-public slots:
+private slots:
     void currentRowEdited();
-
-private:
-    Q_DISABLE_COPY(RecordNavigationPrivate)
 };
 
 }

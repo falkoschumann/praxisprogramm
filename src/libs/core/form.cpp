@@ -30,8 +30,9 @@
 
 namespace Core {
 
-struct FormPrivate
+class FormPrivate
 {
+public:
     int indexOfHeader() {
         return 0;
     }
@@ -58,7 +59,8 @@ Form::Form(QWidget *parent) :
     QWidget(parent),
     d_ptr(new FormPrivate())
 {
-    d_ptr->layout = new QVBoxLayout();
+    Q_D(Form);
+    d->layout = new QVBoxLayout();
     setLayout(d_ptr->layout);
 }
 
@@ -69,40 +71,46 @@ Form::~Form()
 
 QWidget *Form::header() const
 {
-    return d_ptr->header;
+    Q_D(const Form);
+    return d->header;
 }
 
 void Form::setHeader(QWidget *header)
 {
+    Q_D(Form);
     header->setObjectName(QString::fromUtf8("header"));
-    d_ptr->layout->insertWidget(d_ptr->indexOfHeader(), header);
-    d_ptr->header = header;
+    d->layout->insertWidget(d_ptr->indexOfHeader(), header);
+    d->header = header;
 }
 
 QWidget *Form::body() const
 {
-    return d_ptr->body;
+    Q_D(const Form);
+    return d->body;
 }
 
 void Form::setBody(QWidget *body)
 {
+    Q_D(Form);
     body->setObjectName(QString::fromUtf8("body"));
     QSizePolicy sp(QSizePolicy::Preferred, QSizePolicy::Expanding);
     body->setSizePolicy(sp);
-    d_ptr->layout->insertWidget(d_ptr->indexOfBody(), body);
-    d_ptr->body = body;
+    d->layout->insertWidget(d_ptr->indexOfBody(), body);
+    d->body = body;
 }
 
 QWidget *Form::footer() const
 {
-    return d_ptr->footer;
+    Q_D(const Form);
+    return d->footer;
 }
 
 void Form::setFooter(QWidget *footer)
 {
+    Q_D(Form);
     footer->setObjectName(QString::fromUtf8("footer"));
-    d_ptr->layout->insertWidget(d_ptr->indexOfFooter(), footer);
-    d_ptr->footer = footer;
+    d->layout->insertWidget(d_ptr->indexOfFooter(), footer);
+    d->footer = footer;
 }
 
 } // namespace Core

@@ -34,7 +34,8 @@ using namespace Core;
 
 namespace Stammdaten {
 
-struct PatientFormPrivate {
+class PatientFormPrivate {
+public:
     Ui::PatientForm *uiBody;
 };
 
@@ -42,6 +43,7 @@ PatientForm::PatientForm(QWidget *parent) :
     Form(parent),
     d_ptr(new PatientFormPrivate())
 {
+    Q_D(PatientForm);
     QWidget *header = new QWidget();
     header->setStyleSheet("background-color:red;");
     QLayout *headerLayout = new QHBoxLayout();
@@ -50,8 +52,8 @@ PatientForm::PatientForm(QWidget *parent) :
     setHeader(header);
 
     QWidget *body = new QWidget();
-    d_ptr->uiBody = new Ui::PatientForm();
-    d_ptr->uiBody->setupUi(body);
+    d->uiBody = new Ui::PatientForm();
+    d->uiBody->setupUi(body);
     body->setStyleSheet("background-color:yellow;");
     setBody(body);
 

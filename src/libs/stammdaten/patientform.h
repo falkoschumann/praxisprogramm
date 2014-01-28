@@ -36,14 +36,15 @@ class PatientFormPrivate;
 class PatientForm : public Core::Form
 {
     Q_OBJECT
+    Q_DISABLE_COPY(PatientForm)
+    Q_DECLARE_PRIVATE(PatientForm)
 
 public:
     explicit PatientForm(QWidget *parent = 0);
     virtual ~PatientForm();
 
 private:
-    Q_DISABLE_COPY(PatientForm)
-    PatientFormPrivate *d_ptr;
+    PatientFormPrivate * const d_ptr;
 };
 
 }

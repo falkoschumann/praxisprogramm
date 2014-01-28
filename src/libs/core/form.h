@@ -36,6 +36,8 @@ class FormPrivate;
 class Form : public QWidget
 {
     Q_OBJECT
+    Q_DISABLE_COPY(Form)
+    Q_DECLARE_PRIVATE(Form)
 
 public:
     explicit Form(QWidget *parent = 0);
@@ -55,7 +57,6 @@ signals:
 public slots:
 
 private:
-    Q_DISABLE_COPY(Form)
     FormPrivate *d_ptr;
 };
 

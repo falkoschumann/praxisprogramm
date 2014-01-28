@@ -39,6 +39,8 @@ class RecordNavigationPrivate;
 class RecordNavigation : public QWidget
 {
     Q_OBJECT
+    Q_DISABLE_COPY(RecordNavigation)
+    Q_DECLARE_PRIVATE(RecordNavigation)
 
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
 
@@ -64,8 +66,7 @@ signals:
     void currentIndexChanged(int index);
 
 private:
-    Q_DISABLE_COPY(RecordNavigation)
-    RecordNavigationPrivate *d_ptr;
+    RecordNavigationPrivate * const d_ptr;
 };
 
 }

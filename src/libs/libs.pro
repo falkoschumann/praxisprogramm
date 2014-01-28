@@ -1,2 +1,3 @@
 TEMPLATE  = subdirs
-SUBDIRS  += core
+SUBDIRS  += core \
+            stammdaten

@@ -26,12 +26,14 @@
 
 #include "mainwindow.h"
 
-#include <core/form.h>
+#include <stammdaten/patientform.h>
 
-#include <QHBoxLayout>
-#include <QLabel>
+#include <QtDebug>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
 
-using namespace Core;
+using namespace Stammdaten;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -39,31 +41,25 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("Praxisprogramm");
     resize(1000, 600);
 
-    QWidget *header = new QWidget();
-    header->setStyleSheet("background-color:red;");
-    QLayout *headerLayout = new QHBoxLayout();
-    headerLayout->addWidget(new QLabel("Header"));
-    header->setLayout(headerLayout);
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(":memory:");
+    if (!db.open()) qFatal("Can't open database.");
+    QSqlQuery query;
+    if (!query.exec("CREATE TABLE patient (anrede TEXT default '', vorname TEXT default '', nachname TEXT default '', wohnort TEXT default '', geburtsdatum TEXT default 0)")) qCritical() << QString("Can't create patient table: %1").arg(query.lastError().text());
+    if (!query.exec(QString("INSERT INTO patient (anrede, vorname, nachname, wohnort, geburtsdatum) VALUES ('%1', '%2', '%3', '%4', '%5')").arg("Herr").arg("Lukas").arg("Maurer").arg("Beuron").arg("1939-11-01"))) qCritical() << QString("Can't insert patient Lukas Maurer: %1").arg(query.lastError().text());
+    if (!query.exec(QString("INSERT INTO patient (anrede, vorname, nachname, wohnort, geburtsdatum) VALUES ('%1', '%2', '%3', '%4', '%5')").arg("Frau").arg("Johanna").arg("Gottlieb").arg("Brücken").arg("1930-11-18"))) qCritical() << QString("Can't insert patient Johanna Gottlieb: %1").arg(query.lastError().text());
+    if (!query.exec(QString("INSERT INTO patient (anrede, vorname, nachname, wohnort, geburtsdatum) VALUES ('%1', '%2', '%3', '%4', '%5')").arg("Herr").arg("Andreas").arg("Schmitz").arg("Bottenbach").arg("1992-07-13"))) qCritical() << QString("Can't insert patient Andreas Schmitz: %1").arg(query.lastError().text());
+    if (!query.exec(QString("INSERT INTO patient (anrede, vorname, nachname, wohnort, geburtsdatum) VALUES ('%1', '%2', '%3', '%4', '%5')").arg("Herr").arg("Michael").arg("Lehmann").arg("Putzbrunn").arg("1967-12-10"))) qCritical() << QString("Can't insert patient Michael Lehmann: %1").arg(query.lastError().text());
+    if (!query.exec(QString("INSERT INTO patient (anrede, vorname, nachname, wohnort, geburtsdatum) VALUES ('%1', '%2', '%3', '%4', '%5')").arg("Frau").arg("Christina").arg("Eisenhauer").arg("Nannhausen").arg("1989-02-09"))) qCritical() << QString("Can't insert patient Christina Eisenhauer: %1").arg(query.lastError().text());
 
-    QWidget *body = new QWidget();
-    body->setStyleSheet("background-color:yellow;");
-    QLayout *bodyLayout = new QHBoxLayout();
-    bodyLayout->addWidget(new QLabel("Body"));
-    body->setLayout(bodyLayout);
-
-    QWidget *footer = new QWidget();
-    footer->setStyleSheet("background-color:green;");
-    QLayout *footerLayout = new QHBoxLayout();
-    footerLayout->addWidget(new QLabel("Footer"));
-    footer->setLayout(footerLayout);
-
-    Form *form = new Form(this);
-    form->setBody(body);
-    form->setHeader(header);
-    form->setFooter(footer);
-    setCentralWidget(form);
+    setCentralWidget(new PatientForm(this));
 }
 
 MainWindow::~MainWindow()
 {
+    {
+        QSqlDatabase db;
+        db.close();
+    }
+    QSqlDatabase::removeDatabase(QSqlDatabase::defaultConnection);
 }

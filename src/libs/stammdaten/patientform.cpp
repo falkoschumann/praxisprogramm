@@ -27,20 +27,40 @@
 #include "patientform.h"
 #include "ui_patientformbody.h"
 
+#include <QHBoxLayout>
+#include <QLabel>
+
 using namespace Core;
 
 namespace Stammdaten {
 
 struct PatientFormPrivate {
-    Ui::PatientForm *ui;
+    Ui::PatientForm *uiBody;
 };
 
 PatientForm::PatientForm(QWidget *parent) :
     Form(parent),
     d_ptr(new PatientFormPrivate())
 {
-    d_ptr->ui = new Ui::PatientForm();
-    d_ptr->ui->setupUi(this);
+    QWidget *header = new QWidget();
+    header->setStyleSheet("background-color:red;");
+    QLayout *headerLayout = new QHBoxLayout();
+    headerLayout->addWidget(new QLabel("Patient"));
+    header->setLayout(headerLayout);
+    setHeader(header);
+
+    QWidget *body = new QWidget();
+    d_ptr->uiBody = new Ui::PatientForm();
+    d_ptr->uiBody->setupUi(body);
+    body->setStyleSheet("background-color:yellow;");
+    setBody(body);
+
+    QWidget *footer = new QWidget();
+    footer->setStyleSheet("background-color:green;");
+    QLayout *footerLayout = new QHBoxLayout();
+    footerLayout->addWidget(new QLabel("{Platzhalter fuer Formularfuss}"));
+    footer->setLayout(footerLayout);
+    setFooter(footer);
 }
 
 PatientForm::~PatientForm()

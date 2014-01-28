@@ -31,7 +31,7 @@
 #include <QModelIndex>
 #include <QStandardItemModel>
 
-using namespace Core;
+namespace Core {
 
 RecordNavigationPrivate::RecordNavigationPrivate(RecordNavigation *q) :
     q_ptr(q),
@@ -175,3 +175,5 @@ void RecordNavigation::toNew()
 {
     setCurrentIndex(model()->rowCount());
 }
+
+} // namespace Core

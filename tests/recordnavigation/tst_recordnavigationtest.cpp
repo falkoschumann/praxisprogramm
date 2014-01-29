@@ -167,10 +167,12 @@ void RecordNavigationTest::assertInvariant()
 void RecordNavigationTest::assertElement(int elementNumber)
 {
     bool firstElement = elementNumber == 1;
+    bool lastElement = elementNumber == 7;
+    bool newElement = elementNumber == 8;
     QCOMPARE(toFirstButton->isEnabled(), !firstElement);
     QCOMPARE(toPreviousButton->isEnabled(), !firstElement);
-    QCOMPARE(toNextButton->isEnabled(), true);
-    QCOMPARE(toLastButton->isEnabled(), true);
+    QCOMPARE(toNextButton->isEnabled(), !newElement);
+    QCOMPARE(toLastButton->isEnabled(), !lastElement);
     QCOMPARE(toNewButton->isEnabled(), true);
 
     QCOMPARE(fixture->currentIndex(), elementNumber - 1);

@@ -56,6 +56,12 @@ void RecordNavigationPrivate::update()
     bool currentIsFirst = currentIndex == 0;
     ui->toFirstButton->setEnabled(!currentIsFirst);
     ui->toPreviousButton->setEnabled(!currentIsFirst);
+
+    bool currentIsLast = currentIndex == model->rowCount() - 1;
+    ui->toLastButton->setEnabled(!currentIsLast);
+
+    bool currentIsNew = currentIndex == model->rowCount();
+    ui->toNextButton->setEnabled(!currentIsNew);
 }
 
 void RecordNavigationPrivate::currentRowEdited()
@@ -127,6 +133,7 @@ void RecordNavigation::setCurrentIndex(int index)
     Q_D(RecordNavigation);
     d->currentIndex = index;
     d->update();
+    emit currentIndexChanged(index);
 }
 
 /*!

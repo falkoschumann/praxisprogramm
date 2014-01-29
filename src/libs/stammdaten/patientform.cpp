@@ -66,6 +66,11 @@ PatientFormPrivate::~PatientFormPrivate()
     delete uiBody;
 }
 
+/*!
+ * \todo RecordNavigation aus Header entfernen und in Form einbauen.
+ * \todo Model als Property in Form definieren.
+ * \todo Neuen Datensatz anlegen unterstützen.
+ */
 PatientForm::PatientForm(QWidget *parent) :
     Form(parent),
     d_ptr(new PatientFormPrivate())
@@ -86,7 +91,10 @@ PatientForm::PatientForm(QWidget *parent) :
     setBody(d->body);
 
     RecordNavigation *footer  = new RecordNavigation();
+    footer->setModel(d->model);
     setFooter(footer);
+
+    connect(footer, SIGNAL(currentIndexChanged(int)), d->mapper, SLOT(setCurrentIndex(int)));
 }
 
 PatientForm::~PatientForm()

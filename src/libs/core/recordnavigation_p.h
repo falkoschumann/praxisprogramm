@@ -31,11 +31,11 @@
 
 class QAbstractItemModel;
 
+namespace Core {
+
 namespace Ui {
     class RecordNavigation;
 }
-
-namespace Core {
 
 class RecordNavigation;
 

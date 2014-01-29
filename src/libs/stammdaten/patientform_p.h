@@ -32,11 +32,11 @@
 class QSqlTableModel;
 class QDataWidgetMapper;
 
-namespace Ui {
-    class PatientForm;
-}
-
 namespace Stammdaten {
+
+namespace Ui {
+    class PatientFormBody;
+}
 
 class PatientForm;
 
@@ -50,7 +50,7 @@ public:
     virtual ~PatientFormPrivate();
 
     QSqlTableModel *model;
-    Ui::PatientForm *uiBody;
+    Ui::PatientFormBody *uiBody;
     QDataWidgetMapper *mapper;
 };
 

@@ -73,7 +73,7 @@ PatientForm::PatientForm(QWidget *parent) :
     setHeader(header);
 
     QWidget *body = new QWidget();
-    Ui::PatientForm *uiBody = new Ui::PatientForm();
+    Ui::PatientFormBody *uiBody = new Ui::PatientFormBody();
     uiBody->setupUi(body);
     QDataWidgetMapper *mapper = new QDataWidgetMapper(this);
     mapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);

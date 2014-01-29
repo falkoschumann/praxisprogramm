@@ -24,37 +24,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef PATIENTFORM_H
-#define PATIENTFORM_H
+#ifndef PATIENTFORM_P_H
+#define PATIENTFORM_P_H
 
 #include <core/form.h>
 
+class QSqlTableModel;
+class QDataWidgetMapper;
+
+namespace Ui {
+    class PatientForm;
+}
+
 namespace Stammdaten {
 
-class PatientFormPrivate;
+class PatientForm;
 
-class PatientForm : public Core::Form
+class PatientFormPrivate : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY(PatientForm)
-    Q_DECLARE_PRIVATE(PatientForm)
+    Q_DISABLE_COPY(PatientFormPrivate)
 
 public:
-    explicit PatientForm(QWidget *parent = 0);
-    virtual ~PatientForm();
+    PatientFormPrivate(QObject *parent = 0);
+    virtual ~PatientFormPrivate();
 
-    enum {
-        Patient_Anrede       = 0,
-        Patient_Vorname      = 1,
-        Patient_Nachname     = 2,
-        Patient_Wohnort      = 3,
-        Patient_Geburtsdatum = 4
-    };
-
-private:
-    PatientFormPrivate * const d_ptr;
+    QSqlTableModel *model;
+    Ui::PatientForm *uiBody;
+    QDataWidgetMapper *mapper;
 };
 
 }
 
-#endif // PATIENTFORM_H
+#endif // PATIENTFORM_P_H

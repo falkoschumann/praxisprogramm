@@ -19,37 +19,6 @@
      <property name="text">
       <string>Anrede</string>
      </property>
-     <property name="buddy">
-      <cstring>anrede</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QComboBox" name="anrede">
-     <property name="editable">
-      <bool>true</bool>
-     </property>
-     <property name="currentIndex">
-      <number>-1</number>
-     </property>
-     <property name="insertPolicy">
-      <enum>QComboBox::InsertAlphabetically</enum>
-     </property>
-     <item>
-      <property name="text">
-       <string>Herr</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Frau</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Dr.</string>
-      </property>
-     </item>
     </widget>
    </item>
    <item row="1" column="0">
@@ -110,6 +79,9 @@
       <bool>true</bool>
      </property>
     </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="anrede"/>
    </item>
   </layout>
  </widget>

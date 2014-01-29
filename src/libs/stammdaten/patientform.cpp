@@ -25,37 +25,67 @@
  */
 
 #include "patientform.h"
+#include "patientform_p.h"
 #include "ui_patientformbody.h"
 
 #include <core/recordnavigation.h>
 
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QDataWidgetMapper>
+#include <QSqlTableModel>
 
 using namespace Core;
 
 namespace Stammdaten {
 
-class PatientFormPrivate {
-public:
-    Ui::PatientForm *uiBody;
-};
+PatientFormPrivate::PatientFormPrivate(QObject *parent) :
+    QObject(parent)
+{
+}
+
+PatientFormPrivate::~PatientFormPrivate()
+{
+    delete uiBody;
+}
 
 PatientForm::PatientForm(QWidget *parent) :
     Form(parent),
     d_ptr(new PatientFormPrivate())
 {
     Q_D(PatientForm);
+
+    QSqlTableModel *model = new QSqlTableModel(this);
+    model->setTable("patient");
+    model->setSort(Patient_Nachname, Qt::AscendingOrder);
+    model->select();
+    d->model = model;
+
     QWidget *header = new QWidget();
-    header->setStyleSheet("background-color:red;");
     QLayout *headerLayout = new QHBoxLayout();
-    headerLayout->addWidget(new QLabel("Patient"));
+    QLabel *headerLabel = new QLabel("Patient");
+    QFont headerFont;
+    headerFont.setPointSize(20);
+    headerFont.setBold(true);
+    headerLabel->setFont(headerFont);
+    headerLayout->addWidget(headerLabel);
     header->setLayout(headerLayout);
     setHeader(header);
 
     QWidget *body = new QWidget();
-    d->uiBody = new Ui::PatientForm();
-    d->uiBody->setupUi(body);
+    Ui::PatientForm *uiBody = new Ui::PatientForm();
+    uiBody->setupUi(body);
+    QDataWidgetMapper *mapper = new QDataWidgetMapper(this);
+    mapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
+    mapper->setModel(model);
+    mapper->addMapping(uiBody->anrede, Patient_Anrede);
+    mapper->addMapping(uiBody->vorname, Patient_Vorname);
+    mapper->addMapping(uiBody->nachname, Patient_Nachname);
+    mapper->addMapping(uiBody->wohnort, Patient_Wohnort);
+    mapper->addMapping(uiBody->geburtsdatum, Patient_Geburtsdatum);
+    mapper->toFirst();
+    d->mapper = mapper;
+    d->uiBody = uiBody;
     setBody(body);
 
     RecordNavigation *footer  = new RecordNavigation();

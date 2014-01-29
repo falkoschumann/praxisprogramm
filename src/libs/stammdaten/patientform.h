@@ -43,14 +43,6 @@ public:
     explicit PatientForm(QWidget *parent = 0);
     virtual ~PatientForm();
 
-    enum {
-        Patient_Anrede       = 0,
-        Patient_Vorname      = 1,
-        Patient_Nachname     = 2,
-        Patient_Wohnort      = 3,
-        Patient_Geburtsdatum = 4
-    };
-
 private:
     PatientFormPrivate * const d_ptr;
 };

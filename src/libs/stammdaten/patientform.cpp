@@ -40,8 +40,25 @@ using namespace Core;
 namespace Stammdaten {
 
 PatientFormPrivate::PatientFormPrivate(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    uiBody(new Ui::PatientFormBody())
 {
+    model = new QSqlTableModel(this);
+    model->setTable("patient");
+    model->setSort(Patient_Nachname, Qt::AscendingOrder);
+    model->select();
+
+    body = new QWidget();
+    uiBody->setupUi(body);
+    mapper = new QDataWidgetMapper(this);
+    mapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
+    mapper->setModel(model);
+    mapper->addMapping(uiBody->anrede, Patient_Anrede);
+    mapper->addMapping(uiBody->vorname, Patient_Vorname);
+    mapper->addMapping(uiBody->nachname, Patient_Nachname);
+    mapper->addMapping(uiBody->wohnort, Patient_Wohnort);
+    mapper->addMapping(uiBody->geburtsdatum, Patient_Geburtsdatum);
+    mapper->toFirst();
 }
 
 PatientFormPrivate::~PatientFormPrivate()
@@ -55,12 +72,6 @@ PatientForm::PatientForm(QWidget *parent) :
 {
     Q_D(PatientForm);
 
-    QSqlTableModel *model = new QSqlTableModel(this);
-    model->setTable("patient");
-    model->setSort(Patient_Nachname, Qt::AscendingOrder);
-    model->select();
-    d->model = model;
-
     QWidget *header = new QWidget();
     QLayout *headerLayout = new QHBoxLayout();
     QLabel *headerLabel = new QLabel("Patient");
@@ -72,21 +83,7 @@ PatientForm::PatientForm(QWidget *parent) :
     header->setLayout(headerLayout);
     setHeader(header);
 
-    QWidget *body = new QWidget();
-    Ui::PatientFormBody *uiBody = new Ui::PatientFormBody();
-    uiBody->setupUi(body);
-    QDataWidgetMapper *mapper = new QDataWidgetMapper(this);
-    mapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
-    mapper->setModel(model);
-    mapper->addMapping(uiBody->anrede, Patient_Anrede);
-    mapper->addMapping(uiBody->vorname, Patient_Vorname);
-    mapper->addMapping(uiBody->nachname, Patient_Nachname);
-    mapper->addMapping(uiBody->wohnort, Patient_Wohnort);
-    mapper->addMapping(uiBody->geburtsdatum, Patient_Geburtsdatum);
-    mapper->toFirst();
-    d->mapper = mapper;
-    d->uiBody = uiBody;
-    setBody(body);
+    setBody(d->body);
 
     RecordNavigation *footer  = new RecordNavigation();
     setFooter(footer);

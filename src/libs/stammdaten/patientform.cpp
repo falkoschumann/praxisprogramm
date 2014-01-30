@@ -28,11 +28,9 @@
 #include "patientform_p.h"
 #include "ui_patientformbody.h"
 
-#include <core/recordnavigation.h>
-
+#include <QDataWidgetMapper>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QDataWidgetMapper>
 #include <QSqlTableModel>
 
 using namespace Core;
@@ -81,21 +79,12 @@ PatientForm::PatientForm(QWidget *parent) :
     model->select();
     setModel(model);
 
-    RecordNavigation *footer  = new RecordNavigation();
-    footer->setModel(model);
-    setFooter(footer);
-
-    QDataWidgetMapper *mapper = new QDataWidgetMapper(this);
-    mapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
-    mapper->setModel(model);
-    mapper->addMapping(d->uiBody->anrede, Patient_Anrede);
-    mapper->addMapping(d->uiBody->vorname, Patient_Vorname);
-    mapper->addMapping(d->uiBody->nachname, Patient_Nachname);
-    mapper->addMapping(d->uiBody->wohnort, Patient_Wohnort);
-    mapper->addMapping(d->uiBody->geburtsdatum, Patient_Geburtsdatum);
-    mapper->toFirst();
-
-    connect(footer, SIGNAL(currentIndexChanged(int)), mapper, SLOT(setCurrentIndex(int)));
+    dataWidgetMapper()->addMapping(d->uiBody->anrede, Patient_Anrede);
+    dataWidgetMapper()->addMapping(d->uiBody->vorname, Patient_Vorname);
+    dataWidgetMapper()->addMapping(d->uiBody->nachname, Patient_Nachname);
+    dataWidgetMapper()->addMapping(d->uiBody->wohnort, Patient_Wohnort);
+    dataWidgetMapper()->addMapping(d->uiBody->geburtsdatum, Patient_Geburtsdatum);
+    dataWidgetMapper()->toFirst();
 }
 
 PatientForm::~PatientForm()

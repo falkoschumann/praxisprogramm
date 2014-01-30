@@ -29,7 +29,7 @@
 
 #include <QObject>
 
-class QAbstractItemModel;
+class QSqlQueryModel;
 
 namespace Core {
 
@@ -55,7 +55,7 @@ private:
     RecordNavigation *q_ptr;
     int currentIndex;
     Ui::RecordNavigation *ui;
-    QAbstractItemModel *model;
+    QSqlQueryModel *model;
 
 private slots:
     void currentRowEdited();

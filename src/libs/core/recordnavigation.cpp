@@ -28,8 +28,7 @@
 #include "recordnavigation_p.h"
 #include "ui_recordnavigation.h"
 
-#include <QModelIndex>
-#include <QStandardItemModel>
+#include <QSqlQueryModel>
 
 namespace Core {
 
@@ -37,7 +36,7 @@ RecordNavigationPrivate::RecordNavigationPrivate(RecordNavigation *q) :
     q_ptr(q),
     currentIndex(0),
     ui(new Ui::RecordNavigation),
-    model(new QStandardItemModel())
+    model(new QSqlQueryModel())
 {
     ui->setupUi(q);
     ui->currentRow->setFocus();
@@ -102,7 +101,7 @@ RecordNavigation::~RecordNavigation()
     delete d_ptr;
 }
 
-QAbstractItemModel *RecordNavigation::model() const
+QSqlQueryModel *RecordNavigation::model() const
 {
     Q_D(const RecordNavigation);
     return d->model;
@@ -111,7 +110,7 @@ QAbstractItemModel *RecordNavigation::model() const
 /*!
  * \post model() == model;
  */
-void RecordNavigation::setModel(QAbstractItemModel *model)
+void RecordNavigation::setModel(QSqlQueryModel *model)
 {
     Q_D(RecordNavigation);
     d->model = model;
@@ -134,15 +133,6 @@ void RecordNavigation::setCurrentIndex(int index)
     d->currentIndex = index;
     d->update();
     emit currentIndexChanged(index);
-}
-
-/*!
- * \pre 0 <= index.row() && index.row() <= model()->rowCount()
- * \post currentIndex() == index.row()
- */
-void RecordNavigation::setCurrentModelIndex(const QModelIndex &index)
-{
-    setCurrentIndex(index.row());
 }
 
 /*!

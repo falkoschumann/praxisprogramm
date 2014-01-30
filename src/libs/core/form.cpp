@@ -26,7 +26,11 @@
 
 #include "form.h"
 
+#include <core/recordnavigation.h>
+
+#include <QDataWidgetMapper>
 #include <QVBoxLayout>
+#include <QSqlTableModel>
 
 namespace Core {
 
@@ -34,6 +38,7 @@ class FormPrivate
 {
 public:
     FormPrivate();
+    ~FormPrivate();
 
     int indexOfHeader();
     int indexOfBody();
@@ -43,6 +48,8 @@ public:
     QWidget *header;
     QWidget *body;
     QWidget *footer;
+    RecordNavigation *recordNavigation;
+    QDataWidgetMapper *mapper;
     QSqlQueryModel *model;
 };
 
@@ -51,8 +58,18 @@ FormPrivate::FormPrivate() :
     header(0),
     body(0),
     footer(0),
+    recordNavigation(new RecordNavigation()),
+    mapper(new QDataWidgetMapper()),
     model(0)
 {
+    layout->addWidget(recordNavigation);
+
+    mapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
+}
+
+FormPrivate::~FormPrivate()
+{
+    delete mapper;
 }
 
 int FormPrivate::indexOfHeader() {
@@ -78,6 +95,7 @@ Form::Form(QWidget *parent) :
 {
     Q_D(Form);
     setLayout(d->layout);
+    connect(d->recordNavigation, SIGNAL(currentIndexChanged(int)), d->mapper, SLOT(setCurrentIndex(int)));
 }
 
 Form::~Form()
@@ -137,11 +155,20 @@ QSqlQueryModel *Form::model() const
 
 /*!
  * \note Das Form übernimmt nicht den Besitz des model-Objekts.
+ * \todo Was passiert, wenn das model 0 ist?
  */
 void Form::setModel(QSqlQueryModel *model)
 {
     Q_D(Form);
     d->model = model;
+    d->recordNavigation->setModel(model);
+    d->mapper->setModel(model);
+}
+
+QDataWidgetMapper *Form::dataWidgetMapper() const
+{
+    Q_D(const Form);
+    return d->mapper;
 }
 
 } // namespace Core

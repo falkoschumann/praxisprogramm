@@ -29,8 +29,7 @@
 
 #include <QWidget>
 
-class QAbstractItemModel;
-class QModelIndex;
+class QSqlQueryModel;
 
 namespace Core {
 
@@ -48,8 +47,8 @@ public:
     explicit RecordNavigation(QWidget *parent = 0);
     virtual ~RecordNavigation();
 
-    QAbstractItemModel *model() const;
-    void setModel(QAbstractItemModel *model);
+    QSqlQueryModel *model() const;
+    void setModel(QSqlQueryModel *model);
 
     int currentIndex() const;
 
@@ -60,7 +59,6 @@ public slots:
     void toPrevious();
     void toNew();
     virtual void setCurrentIndex(int index);
-    void setCurrentModelIndex(const QModelIndex &index);
 
 signals:
     void currentIndexChanged(int index);

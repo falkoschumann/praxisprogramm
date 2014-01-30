@@ -30,6 +30,7 @@
 #include <QWidget>
 
 class QSqlQueryModel;
+class QDataWidgetMapper;
 
 namespace Core {
 
@@ -56,6 +57,8 @@ public:
 
     QSqlQueryModel *model() const;
     void setModel(QSqlQueryModel *model);
+
+    QDataWidgetMapper *dataWidgetMapper() const;
 
 private:
     FormPrivate *d_ptr;

@@ -40,6 +40,14 @@ class PatientForm : public Core::Form
     Q_DECLARE_PRIVATE(PatientForm)
 
 public:
+    enum {
+        Patient_Anrede       = 0,
+        Patient_Vorname      = 1,
+        Patient_Nachname     = 2,
+        Patient_Wohnort      = 3,
+        Patient_Geburtsdatum = 4
+    };
+
     explicit PatientForm(QWidget *parent = 0);
     virtual ~PatientForm();
 

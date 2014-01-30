@@ -33,35 +33,51 @@ namespace Core {
 class FormPrivate
 {
 public:
-    int indexOfHeader() {
-        return 0;
-    }
+    FormPrivate();
 
-    int indexOfBody() {
-        if (!header) return 0;
-
-        return 1;
-    }
-
-    int indexOfFooter() {
-        if (!header && !body) return 0;
-        if (!header || !body) return 1;
-        return 2;
-    }
+    int indexOfHeader();
+    int indexOfBody();
+    int indexOfFooter();
 
     QVBoxLayout *layout;
     QWidget *header;
     QWidget *body;
     QWidget *footer;
+    QSqlQueryModel *model;
 };
+
+FormPrivate::FormPrivate() :
+    layout(new QVBoxLayout()),
+    header(0),
+    body(0),
+    footer(0),
+    model(0)
+{
+}
+
+int FormPrivate::indexOfHeader() {
+    return 0;
+}
+
+int FormPrivate::indexOfBody() {
+    if (!header) return 0;
+
+    return 1;
+}
+
+int FormPrivate::indexOfFooter() {
+    if (!header && !body) return 0;
+    if (!header || !body) return 1;
+    return 2;
+}
+
 
 Form::Form(QWidget *parent) :
     QWidget(parent),
     d_ptr(new FormPrivate())
 {
     Q_D(Form);
-    d->layout = new QVBoxLayout();
-    setLayout(d_ptr->layout);
+    setLayout(d->layout);
 }
 
 Form::~Form()
@@ -111,6 +127,21 @@ void Form::setFooter(QWidget *footer)
     footer->setObjectName(QString::fromUtf8("footer"));
     d->layout->insertWidget(d_ptr->indexOfFooter(), footer);
     d->footer = footer;
+}
+
+QSqlQueryModel *Form::model() const
+{
+    Q_D(const Form);
+    return d->model;
+}
+
+/*!
+ * \note Das Form übernimmt nicht den Besitz des model-Objekts.
+ */
+void Form::setModel(QSqlQueryModel *model)
+{
+    Q_D(Form);
+    d->model = model;
 }
 
 } // namespace Core

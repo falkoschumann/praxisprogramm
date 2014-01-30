@@ -29,6 +29,8 @@
 
 #include <QWidget>
 
+class QSqlQueryModel;
+
 namespace Core {
 
 class FormPrivate;
@@ -52,9 +54,8 @@ public:
     QWidget *footer() const;
     void setFooter(QWidget *footer);
 
-signals:
-
-public slots:
+    QSqlQueryModel *model() const;
+    void setModel(QSqlQueryModel *model);
 
 private:
     FormPrivate *d_ptr;

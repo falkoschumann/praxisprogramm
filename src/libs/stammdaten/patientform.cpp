@@ -43,22 +43,8 @@ PatientFormPrivate::PatientFormPrivate(QObject *parent) :
     QObject(parent),
     uiBody(new Ui::PatientFormBody())
 {
-    model = new QSqlTableModel(this);
-    model->setTable("patient");
-    model->setSort(Patient_Nachname, Qt::AscendingOrder);
-    model->select();
-
     body = new QWidget();
     uiBody->setupUi(body);
-    mapper = new QDataWidgetMapper(this);
-    mapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
-    mapper->setModel(model);
-    mapper->addMapping(uiBody->anrede, Patient_Anrede);
-    mapper->addMapping(uiBody->vorname, Patient_Vorname);
-    mapper->addMapping(uiBody->nachname, Patient_Nachname);
-    mapper->addMapping(uiBody->wohnort, Patient_Wohnort);
-    mapper->addMapping(uiBody->geburtsdatum, Patient_Geburtsdatum);
-    mapper->toFirst();
 }
 
 PatientFormPrivate::~PatientFormPrivate()
@@ -68,7 +54,6 @@ PatientFormPrivate::~PatientFormPrivate()
 
 /*!
  * \todo RecordNavigation aus Header entfernen und in Form einbauen.
- * \todo Model als Property in Form definieren.
  * \todo Neuen Datensatz anlegen unterstützen.
  */
 PatientForm::PatientForm(QWidget *parent) :
@@ -90,11 +75,27 @@ PatientForm::PatientForm(QWidget *parent) :
 
     setBody(d->body);
 
+    QSqlTableModel *model = new QSqlTableModel(this);
+    model->setTable("patient");
+    model->setSort(Patient_Nachname, Qt::AscendingOrder);
+    model->select();
+    setModel(model);
+
     RecordNavigation *footer  = new RecordNavigation();
-    footer->setModel(d->model);
+    footer->setModel(model);
     setFooter(footer);
 
-    connect(footer, SIGNAL(currentIndexChanged(int)), d->mapper, SLOT(setCurrentIndex(int)));
+    QDataWidgetMapper *mapper = new QDataWidgetMapper(this);
+    mapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
+    mapper->setModel(model);
+    mapper->addMapping(d->uiBody->anrede, Patient_Anrede);
+    mapper->addMapping(d->uiBody->vorname, Patient_Vorname);
+    mapper->addMapping(d->uiBody->nachname, Patient_Nachname);
+    mapper->addMapping(d->uiBody->wohnort, Patient_Wohnort);
+    mapper->addMapping(d->uiBody->geburtsdatum, Patient_Geburtsdatum);
+    mapper->toFirst();
+
+    connect(footer, SIGNAL(currentIndexChanged(int)), mapper, SLOT(setCurrentIndex(int)));
 }
 
 PatientForm::~PatientForm()

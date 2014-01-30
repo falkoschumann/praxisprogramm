@@ -29,7 +29,6 @@
 
 #include <core/form.h>
 
-class QSqlTableModel;
 class QDataWidgetMapper;
 
 namespace Stammdaten {
@@ -46,21 +45,11 @@ class PatientFormPrivate : public QObject
     Q_DISABLE_COPY(PatientFormPrivate)
 
 public:
-    enum {
-        Patient_Anrede       = 0,
-        Patient_Vorname      = 1,
-        Patient_Nachname     = 2,
-        Patient_Wohnort      = 3,
-        Patient_Geburtsdatum = 4
-    };
-
     PatientFormPrivate(QObject *parent = 0);
     virtual ~PatientFormPrivate();
 
-    QSqlTableModel *model;
     QWidget *body;
     Ui::PatientFormBody *uiBody;
-    QDataWidgetMapper *mapper;
 };
 
 }

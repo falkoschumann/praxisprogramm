@@ -25,6 +25,7 @@
  */
 
 #include "form.h"
+#include "form_p.h"
 
 #include <core/recordnavigation.h>
 
@@ -34,42 +35,23 @@
 
 namespace Core {
 
-class FormPrivate
-{
-public:
-    FormPrivate();
-    ~FormPrivate();
-
-    int indexOfHeader();
-    int indexOfBody();
-    int indexOfFooter();
-
-    QVBoxLayout *layout;
-    QWidget *header;
-    QWidget *body;
-    QWidget *footer;
-    RecordNavigation *recordNavigation;
-    QDataWidgetMapper *mapper;
-    QSqlQueryModel *model;
-};
-
-FormPrivate::FormPrivate() :
+FormPrivate::FormPrivate(Form *q) :
+    q_ptr(q),
     layout(new QVBoxLayout()),
     header(0),
     body(0),
     footer(0),
     recordNavigation(new RecordNavigation()),
-    mapper(new QDataWidgetMapper()),
+    mapper(new QDataWidgetMapper(this)),
     model(0)
 {
     layout->addWidget(recordNavigation);
-
     mapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
+    connect(recordNavigation, SIGNAL(currentIndexChanged(int)), mapper, SLOT(setCurrentIndex(int)));
 }
 
 FormPrivate::~FormPrivate()
 {
-    delete mapper;
 }
 
 int FormPrivate::indexOfHeader() {
@@ -91,11 +73,10 @@ int FormPrivate::indexOfFooter() {
 
 Form::Form(QWidget *parent) :
     QWidget(parent),
-    d_ptr(new FormPrivate())
+    d_ptr(new FormPrivate(this))
 {
     Q_D(Form);
     setLayout(d->layout);
-    connect(d->recordNavigation, SIGNAL(currentIndexChanged(int)), d->mapper, SLOT(setCurrentIndex(int)));
 }
 
 Form::~Form()

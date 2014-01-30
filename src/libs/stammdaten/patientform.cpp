@@ -51,7 +51,6 @@ PatientFormPrivate::~PatientFormPrivate()
 }
 
 /*!
- * \todo RecordNavigation aus Header entfernen und in Form einbauen.
  * \todo Neuen Datensatz anlegen unterstützen.
  */
 PatientForm::PatientForm(QWidget *parent) :

@@ -130,6 +130,7 @@ void RecordNavigationTest::cleanupTestCase()
 void RecordNavigationTest::init()
 {
     model = new QSqlTableModel();
+    model->setEditStrategy(QSqlTableModel::OnRowChange);
     model->setTable("colors");
     model->setSort(1, Qt::AscendingOrder);
     model->select();
@@ -173,7 +174,7 @@ void RecordNavigationTest::assertElement(int elementNumber)
     QCOMPARE(toPreviousButton->isEnabled(), !firstElement);
     QCOMPARE(toNextButton->isEnabled(), !newElement);
     QCOMPARE(toLastButton->isEnabled(), !lastElement);
-    QCOMPARE(toNewButton->isEnabled(), true);
+    QCOMPARE(toNewButton->isEnabled(), !newElement);
 
     QCOMPARE(fixture->currentIndex(), elementNumber - 1);
     QCOMPARE(currentRow->text(), QString::number(elementNumber));

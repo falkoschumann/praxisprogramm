@@ -73,6 +73,7 @@ PatientForm::PatientForm(QWidget *parent) :
     setBody(d->body);
 
     QSqlTableModel *model = new QSqlTableModel(this);
+    model->setEditStrategy(QSqlTableModel::OnRowChange);
     model->setTable("patient");
     model->setSort(Patient_Nachname, Qt::AscendingOrder);
     model->select();

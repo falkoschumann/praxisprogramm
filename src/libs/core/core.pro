@@ -1,4 +1,3 @@
-QT          += sql
 TARGET       = core
 TEMPLATE     = lib
 CONFIG      += staticlib

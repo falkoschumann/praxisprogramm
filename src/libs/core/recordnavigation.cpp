@@ -28,7 +28,8 @@
 #include "recordnavigation_p.h"
 #include "ui_recordnavigation.h"
 
-#include <QSqlQueryModel>
+#include <QAbstractItemModel>
+#include <QStandardItemModel>
 
 namespace Core {
 
@@ -36,7 +37,7 @@ RecordNavigationPrivate::RecordNavigationPrivate(RecordNavigation *q) :
     q_ptr(q),
     currentIndex(0),
     ui(new Ui::RecordNavigation),
-    model(new QSqlQueryModel())
+    model(new QStandardItemModel())
 {
     ui->setupUi(q);
     ui->currentRow->setFocus();
@@ -82,6 +83,7 @@ void RecordNavigationPrivate::currentRowEdited()
  * \remarks Die Klasse übernimmt nicht den Besitz des Modells und löscht es auch nicht, wenn sie
  *     zerstört wird.
  * \invariant 0 <= currentIndex() && currentIndex() <= model()->rowCount()
+ * \todo support root index \see QDataWidgetMapper
  */
 RecordNavigation::RecordNavigation(QWidget *parent) :
     QWidget(parent),
@@ -101,7 +103,7 @@ RecordNavigation::~RecordNavigation()
     delete d_ptr;
 }
 
-QSqlQueryModel *RecordNavigation::model() const
+QAbstractItemModel *RecordNavigation::model() const
 {
     Q_D(const RecordNavigation);
     return d->model;
@@ -110,7 +112,7 @@ QSqlQueryModel *RecordNavigation::model() const
 /*!
  * \post model() == model;
  */
-void RecordNavigation::setModel(QSqlQueryModel *model)
+void RecordNavigation::setModel(QAbstractItemModel *model)
 {
     Q_D(RecordNavigation);
     d->model = model;

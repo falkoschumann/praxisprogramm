@@ -29,7 +29,7 @@
 
 #include <QWidget>
 
-class QSqlQueryModel;
+class QAbstractItemModel;
 class QDataWidgetMapper;
 
 namespace Core {
@@ -55,8 +55,8 @@ public:
     QWidget *footer() const;
     void setFooter(QWidget *footer);
 
-    QSqlQueryModel *model() const;
-    void setModel(QSqlQueryModel *model);
+    QAbstractItemModel *model() const;
+    void setModel(QAbstractItemModel *model);
 
     QDataWidgetMapper *dataWidgetMapper() const;
 

@@ -31,7 +31,7 @@
 
 #include <QDataWidgetMapper>
 #include <QVBoxLayout>
-#include <QSqlTableModel>
+#include <QAbstractItemModel>
 
 namespace Core {
 
@@ -70,7 +70,9 @@ int FormPrivate::indexOfFooter() {
     return 2;
 }
 
-
+/*!
+ * \todo support root index \see QDataWidgetMapper
+ */
 Form::Form(QWidget *parent) :
     QWidget(parent),
     d_ptr(new FormPrivate(this))
@@ -128,7 +130,7 @@ void Form::setFooter(QWidget *footer)
     d->footer = footer;
 }
 
-QSqlQueryModel *Form::model() const
+QAbstractItemModel *Form::model() const
 {
     Q_D(const Form);
     return d->model;
@@ -138,7 +140,7 @@ QSqlQueryModel *Form::model() const
  * \note Das Form übernimmt nicht den Besitz des model-Objekts.
  * \todo Was passiert, wenn das model 0 ist?
  */
-void Form::setModel(QSqlQueryModel *model)
+void Form::setModel(QAbstractItemModel *model)
 {
     Q_D(Form);
     d->model = model;

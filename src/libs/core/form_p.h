@@ -32,7 +32,7 @@
 class QDataWidgetMapper;
 class QWidget;
 class QVBoxLayout;
-class QSqlQueryModel;
+class QAbstractItemModel;
 
 namespace Core {
 
@@ -61,7 +61,7 @@ private:
     QWidget *footer;
     RecordNavigation *recordNavigation;
     QDataWidgetMapper *mapper;
-    QSqlQueryModel *model;
+    QAbstractItemModel *model;
 };
 
 } // namespace Core

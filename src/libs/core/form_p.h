@@ -53,6 +53,9 @@ public:
     int indexOfBody();
     int indexOfFooter();
 
+public slots:
+    void setCurrentIndex(int index);
+
 private:
     Form  *q_ptr;
     QVBoxLayout *layout;

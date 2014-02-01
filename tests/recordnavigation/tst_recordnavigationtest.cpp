@@ -59,6 +59,8 @@ private Q_SLOTS:
     void testPressToLast();
     void testInputElementNumber();
     void testPressToNew();
+    void testPressToNewThanToPrevious();
+    void testSetCurrentIndexToNewRecord();
 
 private:
     void createColorTable() const;
@@ -159,7 +161,7 @@ void RecordNavigationTest::setModel()
 
 void RecordNavigationTest::assertInvariant()
 {
-    QVERIFY2(0 <= fixture->currentIndex() && fixture->currentIndex() <= fixture->model()->rowCount(), "invariant");
+    QVERIFY2((0 <= fixture->currentIndex() && fixture->currentIndex() <= fixture->model()->rowCount()) || (fixture->currentIndex() == RecordNavigation::NEW_RECORD), "invariant");
 }
 
 /**
@@ -169,16 +171,22 @@ void RecordNavigationTest::assertElement(int elementNumber)
 {
     bool firstElement = elementNumber == 1;
     bool lastElement = elementNumber == 7;
-    bool newElement = elementNumber == 8;
+    bool newElement = elementNumber == RecordNavigation::NEW_RECORD;
     QCOMPARE(toFirstButton->isEnabled(), !firstElement);
     QCOMPARE(toPreviousButton->isEnabled(), !firstElement);
     QCOMPARE(toNextButton->isEnabled(), !newElement);
     QCOMPARE(toLastButton->isEnabled(), !lastElement);
     QCOMPARE(toNewButton->isEnabled(), !newElement);
 
-    QCOMPARE(fixture->currentIndex(), elementNumber - 1);
-    QCOMPARE(currentRow->text(), QString::number(elementNumber));
-    QCOMPARE(rowCountLabel->text(), QString("of 7"));
+    if (newElement) {
+        QCOMPARE(fixture->currentIndex(), RecordNavigation::NEW_RECORD);
+        QCOMPARE(currentRow->text(), QString("8"));
+        QCOMPARE(rowCountLabel->text(), QString("of 8"));
+    } else {
+        QCOMPARE(fixture->currentIndex(), elementNumber - 1);
+        QCOMPARE(currentRow->text(), QString::number(elementNumber));
+        QCOMPARE(rowCountLabel->text(), QString("of 7"));
+    }
 }
 
 void RecordNavigationTest::cleanup()
@@ -202,7 +210,7 @@ void RecordNavigationTest::testSetCurrentIndex()
 
 void RecordNavigationTest::setCurrentIndex(int index)
 {
-    QVERIFY2(0 <= index && index <= fixture->model()->rowCount(), "setCurrentIndex pre condition");
+    QVERIFY2((0 <= index && index <= fixture->model()->rowCount()) || (index == RecordNavigation::NEW_RECORD), "setCurrentIndex pre condition");
     fixture->setCurrentIndex(index);
     QVERIFY2(fixture->currentIndex() == index, "setCurrentIndex post condition");
 }
@@ -245,9 +253,9 @@ void RecordNavigationTest::testPressToPrevious()
 void RecordNavigationTest::pressToPrevious()
 {
     int index = fixture->currentIndex();
-    QVERIFY2(fixture->currentIndex() > 0, "toPrevious pre condition");
+    QVERIFY2((fixture->currentIndex() > 0) || (fixture->currentIndex() == RecordNavigation::NEW_RECORD), "toPrevious pre condition");
     QTest::mouseClick(toPreviousButton, Qt::LeftButton);
-    QVERIFY2(fixture->currentIndex() == index - 1, "toPrevious post condition");
+    QVERIFY2((fixture->currentIndex() == index - 1) || (fixture->currentIndex() == (model->rowCount() - 1)), "toPrevious post condition");
 }
 
 void RecordNavigationTest::testPressToFirst()
@@ -280,13 +288,28 @@ void RecordNavigationTest::testPressToNew()
 {
     inputElement(5);
     pressToNew();
-    assertElement(8);
+    assertElement(RecordNavigation::NEW_RECORD);
 }
 
 void RecordNavigationTest::pressToNew()
 {
     QTest::mouseClick(toNewButton, Qt::LeftButton);
-    QVERIFY2(fixture->currentIndex() == fixture->model()->rowCount(), "toNew post condition");
+    QVERIFY2(fixture->currentIndex() == RecordNavigation::NEW_RECORD, "toNew post condition");
+}
+
+void RecordNavigationTest::testPressToNewThanToPrevious()
+{
+    inputElement(5);
+    pressToNew();
+    pressToPrevious();
+    assertElement(7);
+}
+
+void RecordNavigationTest::testSetCurrentIndexToNewRecord()
+{
+    inputElement(2);
+    setCurrentIndex(RecordNavigation::NEW_RECORD);
+    assertElement(RecordNavigation::NEW_RECORD);
 }
 
 QTEST_MAIN(RecordNavigationTest)

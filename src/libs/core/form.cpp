@@ -47,7 +47,7 @@ FormPrivate::FormPrivate(Form *q) :
 {
     layout->addWidget(recordNavigation);
     mapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
-    connect(recordNavigation, SIGNAL(currentIndexChanged(int)), mapper, SLOT(setCurrentIndex(int)));
+    connect(recordNavigation, SIGNAL(currentIndexChanged(int)), this, SLOT(setCurrentIndex(int)));
 }
 
 FormPrivate::~FormPrivate()
@@ -68,6 +68,15 @@ int FormPrivate::indexOfFooter() {
     if (!header && !body) return 0;
     if (!header || !body) return 1;
     return 2;
+}
+
+void FormPrivate::setCurrentIndex(int index)
+{
+    if (index == RecordNavigation::NEW_RECORD) {
+        // TODO prepare new record
+    } else {
+        mapper->setCurrentIndex(index);
+    }
 }
 
 /*!

@@ -50,18 +50,27 @@ RecordNavigationPrivate::~RecordNavigationPrivate()
 
 void RecordNavigationPrivate::update()
 {
-    ui->currentRow->setText(QString::number(currentIndex + 1));
-    ui->rowCountLabel->setText(QString("of %1").arg(model->rowCount()));
-
+    // Current state
+    int rowCount = model->rowCount();
     bool currentIsFirst = currentIndex == 0;
+    bool currentIsLast = currentIndex == rowCount - 1;
+    bool currentIsNew = currentIndex == RecordNavigation::NEW_RECORD;
+
+    // Texts
+    if (currentIndex == RecordNavigation::NEW_RECORD) {
+        ui->currentRow->setText(QString::number(rowCount + 1));
+        ui->rowCountLabel->setText(QString("of %1").arg(rowCount + 1));
+    } else {
+        ui->currentRow->setText(QString::number(currentIndex + 1));
+        ui->rowCountLabel->setText(QString("of %1").arg(rowCount));
+    }
+
+    // Buttons
     ui->toFirstButton->setEnabled(!currentIsFirst);
     ui->toPreviousButton->setEnabled(!currentIsFirst);
-
-    bool currentIsLast = currentIndex == model->rowCount() - 1;
-    ui->toLastButton->setEnabled(!currentIsLast);
-
-    bool currentIsNew = currentIndex == model->rowCount();
     ui->toNextButton->setEnabled(!currentIsNew);
+    ui->toLastButton->setEnabled(!currentIsLast);
+    ui->toNewButton->setEnabled(!currentIsNew);
 }
 
 void RecordNavigationPrivate::currentRowEdited()
@@ -71,6 +80,8 @@ void RecordNavigationPrivate::currentRowEdited()
     int newIndex = ui->currentRow->text().toInt(&ok);
     if (ok) q->setCurrentIndex(newIndex - 1);
 }
+
+const int RecordNavigation::NEW_RECORD = -1;
 
 /*!
  * \brief Ein Widget zum Navigieren innerhalb eines Modells.
@@ -82,7 +93,7 @@ void RecordNavigationPrivate::currentRowEdited()
  *
  * \remarks Die Klasse übernimmt nicht den Besitz des Modells und löscht es auch nicht, wenn sie
  *     zerstört wird.
- * \invariant 0 <= currentIndex() && currentIndex() <= model()->rowCount()
+ * \invariant (0 <= currentIndex() && currentIndex() <= model()->rowCount()) || (currentIndex() == NEW_RECORD)
  * \todo support root index \see QDataWidgetMapper
  */
 RecordNavigation::RecordNavigation(QWidget *parent) :
@@ -126,7 +137,7 @@ int RecordNavigation::currentIndex() const
 }
 
 /*!
- * \pre 0 <= index && index <= model()->rowCount()
+ * \pre (0 <= index && index <= model()->rowCount()) || (index == NEW_RECORD)
  * \post currentIndex() == index
  */
 void RecordNavigation::setCurrentIndex(int index)
@@ -160,25 +171,33 @@ void RecordNavigation::toLast()
  */
 void RecordNavigation::toNext()
 {
-    setCurrentIndex(currentIndex() + 1);
+    if (currentIndex() < model()->rowCount()) {
+        setCurrentIndex(currentIndex() + 1);
+    } else {
+        toNew();
+    }
 }
 
 /*!
  * \pre $index = currentIndex()
- * \pre currentIndex() > 0
- * \post currentIndex() == $index - 1
+ * \pre currentIndex() > 0 || currentIndex() == NEW_RECORD
+ * \post currentIndex() == $index - 1 || currentIndex() == model()->rowCount()
  */
 void RecordNavigation::toPrevious()
 {
-    setCurrentIndex(currentIndex() - 1);
+    if (currentIndex() == NEW_RECORD) {
+        setCurrentIndex(model()->rowCount() - 1);
+    } else {
+        setCurrentIndex(currentIndex() - 1);
+    }
 }
 
 /**
- * \post currentIndex() == model()->rowCount()
+ * \post currentIndex() == NEW_RECORD
  */
 void RecordNavigation::toNew()
 {
-    setCurrentIndex(model()->rowCount());
+    setCurrentIndex(NEW_RECORD);
 }
 
 } // namespace Core

@@ -44,6 +44,8 @@ class RecordNavigation : public QWidget
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
 
 public:
+    static const int NEW_RECORD;
+
     explicit RecordNavigation(QWidget *parent = 0);
     virtual ~RecordNavigation();
 

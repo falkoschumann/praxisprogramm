@@ -156,7 +156,6 @@ void RecordNavigationTest::init()
 void RecordNavigationTest::setModel()
 {
     fixture->setModel(model);
-    QVERIFY2(fixture->model() == model, "setModel() post condition");
 }
 
 void RecordNavigationTest::assertInvariant()
@@ -210,9 +209,7 @@ void RecordNavigationTest::testSetCurrentIndex()
 
 void RecordNavigationTest::setCurrentIndex(int index)
 {
-    QVERIFY2((0 <= index && index <= fixture->model()->rowCount()) || (index == RecordNavigation::NEW_RECORD), "setCurrentIndex pre condition");
     fixture->setCurrentIndex(index);
-    QVERIFY2(fixture->currentIndex() == index, "setCurrentIndex post condition");
 }
 
 void RecordNavigationTest::testPressToNext()
@@ -237,10 +234,7 @@ void RecordNavigationTest::inputElement(int elementNumber)
 
 void RecordNavigationTest::pressToNext()
 {
-    int index = fixture->currentIndex();
-    QVERIFY2(fixture->currentIndex() <= fixture->model()->rowCount(), "toNext pre condition");
     QTest::mouseClick(toNextButton, Qt::LeftButton);
-    QVERIFY2(fixture->currentIndex() == index + 1, "toNext post condition");
 }
 
 void RecordNavigationTest::testPressToPrevious()
@@ -252,10 +246,7 @@ void RecordNavigationTest::testPressToPrevious()
 
 void RecordNavigationTest::pressToPrevious()
 {
-    int index = fixture->currentIndex();
-    QVERIFY2((fixture->currentIndex() > 0) || (fixture->currentIndex() == RecordNavigation::NEW_RECORD), "toPrevious pre condition");
     QTest::mouseClick(toPreviousButton, Qt::LeftButton);
-    QVERIFY2((fixture->currentIndex() == index - 1) || (fixture->currentIndex() == (model->rowCount() - 1)), "toPrevious post condition");
 }
 
 void RecordNavigationTest::testPressToFirst()
@@ -268,7 +259,6 @@ void RecordNavigationTest::testPressToFirst()
 void RecordNavigationTest::pressToFirst()
 {
     QTest::mouseClick(toFirstButton, Qt::LeftButton);
-    QVERIFY2(fixture->currentIndex() == 0, "toFirst post condition");
 }
 
 void RecordNavigationTest::testPressToLast()
@@ -281,7 +271,6 @@ void RecordNavigationTest::testPressToLast()
 void RecordNavigationTest::pressToLast()
 {
     QTest::mouseClick(toLastButton, Qt::LeftButton);
-    QVERIFY2(fixture->currentIndex() == fixture->model()->rowCount() - 1, "toLast post condition");
 }
 
 void RecordNavigationTest::testPressToNew()
@@ -294,7 +283,6 @@ void RecordNavigationTest::testPressToNew()
 void RecordNavigationTest::pressToNew()
 {
     QTest::mouseClick(toNewButton, Qt::LeftButton);
-    QVERIFY2(fixture->currentIndex() == RecordNavigation::NEW_RECORD, "toNew post condition");
 }
 
 void RecordNavigationTest::testPressToNewThanToPrevious()

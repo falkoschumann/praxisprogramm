@@ -42,6 +42,7 @@ private Q_SLOTS:
 
     void testCase1();
     void testCase2();
+    void testAssert();
 };
 
 TestlibTest::TestlibTest()
@@ -79,6 +80,11 @@ void TestlibTest::testCase2()
 {
     qDebug() << "testCase2";
     QVERIFY2(true, "Failure");
+}
+
+void TestlibTest::testAssert()
+{
+    Q_ASSERT_X(false, "assert", "fail");
 }
 
 QTEST_APPLESS_MAIN(TestlibTest)

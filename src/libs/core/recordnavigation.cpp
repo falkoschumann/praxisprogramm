@@ -93,7 +93,6 @@ const int RecordNavigation::NEW_RECORD = -1;
  *
  * \remarks Die Klasse übernimmt nicht den Besitz des Modells und löscht es auch nicht, wenn sie
  *     zerstört wird.
- * \invariant (0 <= currentIndex() && currentIndex() <= model()->rowCount()) || (currentIndex() == NEW_RECORD)
  * \todo support root index \see QDataWidgetMapper
  */
 RecordNavigation::RecordNavigation(QWidget *parent) :
@@ -120,14 +119,13 @@ QAbstractItemModel *RecordNavigation::model() const
     return d->model;
 }
 
-/*!
- * \post model() == model;
- */
-void RecordNavigation::setModel(QAbstractItemModel *model)
+void RecordNavigation::setModel(QAbstractItemModel *newModel)
 {
     Q_D(RecordNavigation);
-    d->model = model;
+    d->model = newModel;
     setCurrentIndex(0);
+
+    Q_ASSERT_X(model() == newModel, "set model", "post condition");
 }
 
 int RecordNavigation::currentIndex() const
@@ -136,68 +134,65 @@ int RecordNavigation::currentIndex() const
     return d->currentIndex;
 }
 
-/*!
- * \pre (0 <= index && index <= model()->rowCount()) || (index == NEW_RECORD)
- * \post currentIndex() == index
- */
 void RecordNavigation::setCurrentIndex(int index)
 {
+    Q_ASSERT_X((0 <= index && index <= model()->rowCount()) || (index == NEW_RECORD), "set current index", "pre condition");
+
     Q_D(RecordNavigation);
     d->currentIndex = index;
     d->update();
     emit currentIndexChanged(index);
+
+    Q_ASSERT_X((currentIndex() == index), "set current index", "post condition");
 }
 
-/*!
- * \post currentIndex() == 0
- */
 void RecordNavigation::toFirst()
 {
     setCurrentIndex(0);
+
+    Q_ASSERT_X(currentIndex() == 0, "go to first", "post condition");
 }
 
-/*!
- * \post currentIndex() == model()->rowCount() - 1
- */
 void RecordNavigation::toLast()
 {
     setCurrentIndex(model()->rowCount() - 1);
+
+    Q_ASSERT_X(currentIndex() == (model()->rowCount() - 1), "go to last", "post condition");
 }
 
-/*!
- * \pre $index = currentIndex()
- * \pre currentIndex() <= model()->rowCount()
- * \post currentIndex() == $index + 1
- */
 void RecordNavigation::toNext()
 {
+    const int index = currentIndex();
+    Q_ASSERT_X(currentIndex() <= model()->rowCount(), "go to next", "pre condition");
+
     if (currentIndex() < model()->rowCount()) {
         setCurrentIndex(currentIndex() + 1);
     } else {
         toNew();
     }
+
+    Q_ASSERT_X(currentIndex() == (index + 1), "go to next", "post condition");
 }
 
-/*!
- * \pre $index = currentIndex()
- * \pre currentIndex() > 0 || currentIndex() == NEW_RECORD
- * \post currentIndex() == $index - 1 || currentIndex() == model()->rowCount()
- */
 void RecordNavigation::toPrevious()
 {
+    const int index = currentIndex();
+    Q_ASSERT_X((currentIndex() > 0) || (currentIndex() == NEW_RECORD), "go to previous", "pre condition");
+
     if (currentIndex() == NEW_RECORD) {
         setCurrentIndex(model()->rowCount() - 1);
     } else {
         setCurrentIndex(currentIndex() - 1);
     }
+
+    Q_ASSERT_X((currentIndex() == index - 1) || (currentIndex() == (model()->rowCount() - 1)), "go to previous", "post condition");
 }
 
-/**
- * \post currentIndex() == NEW_RECORD
- */
 void RecordNavigation::toNew()
 {
     setCurrentIndex(NEW_RECORD);
+
+    Q_ASSERT_X(currentIndex() == NEW_RECORD, "go to new", "post condition");
 }
 
 } // namespace Core

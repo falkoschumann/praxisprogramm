@@ -28,6 +28,8 @@
 #include "recordnavigation_p.h"
 #include "ui_recordnavigation.h"
 
+#include <QtDebug>
+
 #include <QAbstractItemModel>
 #include <QStandardItemModel>
 
@@ -55,6 +57,8 @@ void RecordNavigationPrivate::update()
     bool currentIsFirst = currentIndex == 0;
     bool currentIsLast = currentIndex == rowCount - 1;
     bool currentIsNew = currentIndex == RecordNavigation::NEW_RECORD;
+
+    qDebug() << "row count:" << rowCount << ", current index:" << currentIndex;
 
     // Texts
     if (currentIndex == RecordNavigation::NEW_RECORD) {
@@ -165,13 +169,13 @@ void RecordNavigation::toNext()
     const int index = currentIndex();
     Q_ASSERT_X(currentIndex() <= model()->rowCount(), "go to next", "pre condition");
 
-    if (currentIndex() < model()->rowCount()) {
+    if (currentIndex() < (model()->rowCount() - 1)) {
         setCurrentIndex(currentIndex() + 1);
     } else {
         toNew();
     }
 
-    Q_ASSERT_X(currentIndex() == (index + 1), "go to next", "post condition");
+    Q_ASSERT_X((currentIndex() == (index + 1) || (currentIndex() == NEW_RECORD)), "go to next", "post condition");
 }
 
 void RecordNavigation::toPrevious()

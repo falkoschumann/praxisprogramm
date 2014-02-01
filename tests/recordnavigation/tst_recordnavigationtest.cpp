@@ -61,6 +61,7 @@ private Q_SLOTS:
     void testPressToNew();
     void testPressToNewThanToPrevious();
     void testSetCurrentIndexToNewRecord();
+    void testPressToLastThanToNext();
 
 private:
     void createColorTable() const;
@@ -297,6 +298,13 @@ void RecordNavigationTest::testSetCurrentIndexToNewRecord()
 {
     inputElement(2);
     setCurrentIndex(RecordNavigation::NEW_RECORD);
+    assertElement(RecordNavigation::NEW_RECORD);
+}
+
+void RecordNavigationTest::testPressToLastThanToNext()
+{
+    pressToLast();
+    pressToNext();
     assertElement(RecordNavigation::NEW_RECORD);
 }
 

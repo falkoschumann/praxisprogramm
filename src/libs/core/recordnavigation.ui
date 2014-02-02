@@ -32,6 +32,9 @@
      <property name="enabled">
       <bool>false</bool>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="text">
       <string>|&lt;</string>
      </property>
@@ -45,6 +48,9 @@
     <widget class="QToolButton" name="toPreviousButton">
      <property name="enabled">
       <bool>false</bool>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="text">
       <string>&lt;</string>
@@ -75,6 +81,9 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="text">
       <string>1</string>
      </property>
@@ -85,6 +94,9 @@
    </item>
    <item>
     <widget class="QToolButton" name="toNextButton">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="text">
       <string>&gt;</string>
      </property>
@@ -96,6 +108,9 @@
    </item>
    <item>
     <widget class="QToolButton" name="toLastButton">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="text">
       <string>&gt;|</string>
      </property>
@@ -107,6 +122,9 @@
    </item>
    <item>
     <widget class="QToolButton" name="toNewButton">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="text">
       <string>&gt;*</string>
      </property>

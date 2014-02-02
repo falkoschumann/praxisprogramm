@@ -86,6 +86,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>anrede</tabstop>
+  <tabstop>vorname</tabstop>
+  <tabstop>nachname</tabstop>
+  <tabstop>wohnort</tabstop>
+  <tabstop>geburtsdatum</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

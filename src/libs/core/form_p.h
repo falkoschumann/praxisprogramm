@@ -52,6 +52,8 @@ public:
     int indexOfHeader();
     int indexOfBody();
     int indexOfFooter();
+    void clearAllEditorData();
+    QVariant defaultValue(int type);
 
 public slots:
     void setCurrentIndex(int index);

@@ -29,9 +29,15 @@
 
 #include <core/recordnavigation.h>
 
-#include <QDataWidgetMapper>
-#include <QVBoxLayout>
+#include <QtDebug>
+
 #include <QAbstractItemModel>
+#include <QAbstractItemDelegate>
+#include <QDataWidgetMapper>
+#include <QDateTime>
+#include <QDateTimeEdit>
+#include <QMetaProperty>
+#include <QVBoxLayout>
 
 namespace Core {
 
@@ -73,9 +79,42 @@ int FormPrivate::indexOfFooter() {
 void FormPrivate::setCurrentIndex(int index)
 {
     if (index == RecordNavigation::NEW_RECORD) {
-        // TODO prepare new record
+        clearAllEditorData();
     } else {
         mapper->setCurrentIndex(index);
+    }
+}
+
+void FormPrivate::clearAllEditorData()
+{
+    for (int i = 0; i < model->columnCount(); i++) {
+        QWidget *editor = mapper->mappedWidgetAt(i);
+        if (editor) {
+            QByteArray propertyName = editor->metaObject()->userProperty().name();
+            if (propertyName == "dateTime") {
+                    if (editor->inherits("QTimeEdit")) {
+                        propertyName = "time";
+                    } else if (editor->inherits("QDateEdit")) {
+                        propertyName = "date";
+                    }
+                }
+            if (!propertyName.isEmpty()) {
+                int type = editor->property(propertyName).userType();
+                editor->setProperty(propertyName, defaultValue(type));
+            }
+        }
+    }
+}
+
+QVariant FormPrivate::defaultValue(int type)
+{
+    switch (type) {
+    case QVariant::DateTime:
+    case QVariant::Date:
+    case QVariant::Time:
+        return QDateTime::currentDateTime();
+    default:
+        return QVariant(type, (const void *)0);
     }
 }
 
